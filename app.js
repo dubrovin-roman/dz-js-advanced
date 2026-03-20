@@ -22,6 +22,13 @@ function getUniqueUsers(users) {
     return result;
 }
 
+// проверка валидации
+console.log(getUniqueUsers('string'));
+console.log(getUniqueUsers([]));
+console.log(getUniqueUsers(['str', 'str', 1]));
+console.log(getUniqueUsers([{name: 'Вася'}, {name: 'Петя'}, {name: 'Петя'}]));
+
+// проверка рабочего сценария
 console.log(users);
 const uniqUsers = getUniqueUsers(users);
 console.log(uniqUsers);
