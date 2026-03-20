@@ -1,15 +1,27 @@
 'use strict';
 
-// Встроенные данные
-const user1 = {name: 'Alice', id: 1};
-const user2 = {name: 'Bob', id: 2};
-const user3 = {name: 'Charlie', id: 3};
+const users = [
+    { id: 1, name: 'Вася' },
+    { id: 2, name: 'Петя' },
+    { id: 1, name: 'Вася' },
+    ];
 
-// Ваш код здесь
-const wSet = new WeakSet();
-wSet.add(user1);
-console.log(`Добавлен пользователь: Alice`);
-wSet.add(user2);
-console.log(`Добавлен пользователь: Bob`);
-console.log(`Проверка наличия Alice: ${wSet.has(user1)}`);
-console.log(`Проверка наличия Charlie: ${wSet.has(user3)}`);
+function getUniqueUsers(users) {
+    if (!Array.isArray(users) || users.length === 0) {
+        return null;
+    }
+    for (const user of users) {
+        if (typeof user !== 'object' || !user?.id) {
+            return null;
+        }
+    }
+
+    const userIdSet = new Set(users.map(user => user.id));
+    const result = [];
+    userIdSet.forEach(id => result.push(users.find(user => user.id === id)));
+    return result;
+}
+
+console.log(users);
+const uniqUsers = getUniqueUsers(users);
+console.log(uniqUsers);
