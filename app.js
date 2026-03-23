@@ -1,34 +1,27 @@
 'use strict';
 
-const users = [
-    { id: 1, name: 'Вася' },
-    { id: 2, name: 'Петя' },
-    { id: 1, name: 'Вася' },
-    ];
-
-function getUniqueUsers(users) {
-    if (!Array.isArray(users) || users.length === 0) {
+function castDice(diceType) {
+    const diceRegex = /^d(4|6|8|10|12|16|20)$/;
+    if (typeof diceType !== 'string' || !diceRegex.test(diceType)) {
         return null;
     }
-    for (const user of users) {
-        if (typeof user !== 'object' || !user?.id) {
-            return null;
-        }
-    }
-
-    const userIdSet = new Set(users.map(user => user.id));
-    const result = [];
-    userIdSet.forEach(id => result.push(users.find(user => user.id === id)));
-    return result;
+    const max = Number(diceType.replace('d', ''));
+    return Math.ceil(Math.random() * (max - 1 + 1));
 }
 
-// проверка валидации
-console.log(getUniqueUsers('string'));
-console.log(getUniqueUsers([]));
-console.log(getUniqueUsers(['str', 'str', 1]));
-console.log(getUniqueUsers([{name: 'Вася'}, {name: 'Петя'}, {name: 'Петя'}]));
 
-// проверка рабочего сценария
-console.log(users);
-const uniqUsers = getUniqueUsers(users);
-console.log(uniqUsers);
+
+
+console.log(castDice('d1'));
+console.log(castDice('d100'));
+console.log(castDice('8d'));
+console.log(castDice(10));
+console.log(castDice('error'));
+console.log('---------------------');
+console.log(castDice('d4'));
+console.log(castDice('d6'));
+console.log(castDice('d8'));
+console.log(castDice('d10'));
+console.log(castDice('d12'));
+console.log(castDice('d16'));
+console.log(castDice('d20'));
