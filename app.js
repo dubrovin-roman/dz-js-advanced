@@ -6,7 +6,7 @@ function castDice(diceType) {
         return null;
     }
     const max = Number(diceType.replace('d', ''));
-    return Math.ceil(Math.random() * (max - 1 + 1));
+    return Math.floor(Math.random() * max) + 1;
 }
 
 
