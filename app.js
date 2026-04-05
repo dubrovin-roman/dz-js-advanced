@@ -1,43 +1,67 @@
 'use strict';
 
-// Базовый класс Персонаж
-function Character(species, name, language) {
-  this.species = species;
-  this.name = name;
-  this.language = language;
+class Car {
+  #make;
+  #model;
+  #mileage;
+  
+  constructor(make, model, mileage) {
+    if (typeof make !== 'string' || make.trim() === '') {
+      throw new Error('Марка - непустая строка');
+    }
+    if (typeof model !== 'string' || model.trim() === '') {
+      throw new Error('Модель - непустая строка');
+    }
+    if (typeof mileage !== 'number' || mileage <= 0) {
+      throw new Error('Пробег - положительное число');
+    }
+    this.#make = make;
+    this.#model = model;
+    this.#mileage = mileage;
+  }
+
+  get mileage() {
+    return this.#mileage;
+  }
+
+  set mileage(mileage) {
+    if (typeof mileage !== 'number' || mileage <= 0 || mileage < this.#mileage ) {
+      throw new Error('Пробег - положительное число и не должно быть меньше уже установленного.');
+    }
+    this.#mileage = mileage;
+  }
+
+  info() {
+    console.log(`марка: ${this.#make}, модель: ${this.#model}, пробег: ${this.#mileage}`);
+  }
 }
 
-Character.prototype.speak = function() {
-  console.log(`language: ${this.language} name: ${this.name}`);
-};
+const car = new Car('Шкода', 'Рапид', 115_000);
+car.info();
+car.mileage = 150_000;
+car.info();
 
-
-// Класс Орк
-function Orc(name, weapon) {
-  Character.call(this, 'Орк', name, 'орочий');
-  this.weapon = weapon;
-}
-Orc.prototype = Object.create(Character.prototype);
-Orc.prototype.constructor = Orc;
-Orc.prototype.strike = function() {
-  console.log(`${this.species} по имени ${this.name} нанес удар ${this.weapon}`);
+try {
+  const car2 = new Car(123, 'Рапид', 115_000);
+} catch (error) {
+  console.log(`Error: ${error.message}`);
 }
 
-const ork1 = new Orc('Ваня', 'Дубина');
-ork1.speak();
-ork1.strike();
-
-//Класс Эльф
-function Elf(name, typeOfSpells) {
-  Character.call(this, 'Эльф', name, 'эльфский');
-  this.typeOfSpells = typeOfSpells;
-}
-Elf.prototype = Object.create(Character.prototype);
-Elf.prototype.constructor = Elf;
-Elf.prototype.createSpell = function() {
-  console.log(`${this.species} по имени ${this.name} создал заклнание ${this.typeOfSpells}`);
+try {
+  const car3 = new Car('Шкода', 123, 115_000);
+} catch (error) {
+  console.log(`Error: ${error.message}`);
 }
 
-const elf1 = new Elf('Леголаз', 'Огненный шар');
-elf1.speak();
-elf1.createSpell();
+try {
+  const car4 = new Car('Шкода', 'Рапид', '150');
+} catch (error) {
+  console.log(`Error: ${error.message}`);
+}
+
+try {
+  const car5 = new Car('Шкода', 'Рапид', 115_000);
+  car.mileage = 50_000;
+} catch (error) {
+  console.log(`Error: ${error.message}`);
+}
