@@ -27,6 +27,10 @@ fetch("https://pokeapi.co/api/v2/pokemon/ditto")
       throw new Error("Invalid effect_entries");
     }
     const enRes = effect_entries.find((e) => e.language.name === "en");
-    console.log(enRes.effect);
+    if (enRes) {
+      console.log(enRes.effect);
+    } else {
+      throw new Error("The description in English was not found.");
+    }
   })
   .catch((err) => console.log(err));
