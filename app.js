@@ -1,36 +1,29 @@
 "use strict";
 
-fetch("https://pokeapi.co/api/v2/pokemon/ditto")
-  .then((res) => {
-    if (!res.ok) {
-      throw new Error("HTTP " + res.status);
-    }
-    return res.json();
-  })
-  .then((data) => {
-    const { abilities } = data;
-    if (!Array.isArray(abilities) || abilities.length === 0) {
-      throw new Error("Invalid abilities");
-    }
-    const url = abilities[0].ability.url;
-    return fetch(url);
-  })
-  .then((res) => {
-    if (!res.ok) {
-      throw new Error("HTTP " + res.status);
-    }
-    return res.json();
-  })
-  .then((data) => {
-    const { effect_entries } = data;
-    if (!Array.isArray(effect_entries) || effect_entries.length === 0) {
-      throw new Error("Invalid effect_entries");
-    }
-    const enRes = effect_entries.find((e) => e.language.name === "en");
-    if (enRes) {
-      console.log(enRes.effect);
-    } else {
-      throw new Error("The description in English was not found.");
-    }
-  })
-  .catch((err) => console.log(err));
+function getGeoLocationPromise() {
+  const { resolve, reject, promise } = Promise.withResolvers();
+
+  if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        resolve(`Широта: ${latitude}, Долгота: ${longitude}`);
+      },
+      (error) => {
+        reject(new Error(`Ошибка получения геолокации: ${error.message}`));
+      },
+    );
+  } else {
+    reject(new Error("Geolocation не поддерживается в этом браузере"));
+  }
+
+  return promise;
+}
+
+const panel = document.querySelector(".panel");
+const geoPromise = getGeoLocationPromise();
+geoPromise
+  .then((data) => (panel.innerText = data))
+  .catch((err) => (panel.innerText = err))
+  .finally(() => console.log("Обработка geoPromise завершена."));
