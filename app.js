@@ -1,29 +1,35 @@
 "use strict";
 
-function getGeoLocationPromise() {
-  const { resolve, reject, promise } = Promise.withResolvers();
+const activities = document.querySelector(".activities");
+const generatorBtn = document.querySelector(".generator-btn");
 
-  if ("geolocation" in navigator) {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-        resolve(`Широта: ${latitude}, Долгота: ${longitude}`);
-      },
-      (error) => {
-        reject(new Error(`Ошибка получения геолокации: ${error.message}`));
-      },
+async function getActivity() {
+  try {
+    const activityResponse = await fetch(
+      "https://bored.api.lewagon.com/api/activity",
     );
-  } else {
-    reject(new Error("Geolocation не поддерживается в этом браузере"));
+    if (!activityResponse.ok) {
+      throw new Error(activityResponse.status);
+    }
+    const activityData = await activityResponse.json();
+    const { activity } = activityData;
+    return activity;
+  } catch (error) {
+    console.error(error);
   }
-
-  return promise;
 }
 
-const panel = document.querySelector(".panel");
-const geoPromise = getGeoLocationPromise();
-geoPromise
-  .then((data) => (panel.innerText = data))
-  .catch((err) => (panel.innerText = err))
-  .finally(() => console.log("Обработка geoPromise завершена."));
+async function generateActivities() {
+  const activity = await getActivity();
+  const activityEl = document.createElement("div");
+  activityEl.setAttribute("class", "activity");
+  activityEl.innerText = activity;
+  activities.appendChild(activityEl);
+}
+
+generatorBtn.addEventListener("click", () => {
+  activities.innerHTML = "";
+  generateActivities();
+  generateActivities();
+  generateActivities();
+});
