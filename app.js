@@ -8,11 +8,9 @@ btnBox.addEventListener("click", (ev) => {
   if (ev.target.classList.contains("push-btn")) {
     count++;
     countBox.innerText = count;
-    if (ev.target.innerText === "Нажми меня") {
-      for (const btn of btnBox.children) {
-        btn.innerText = "Нажми меня";
-      }
-      ev.target.innerText = "Нажата!";
+    for (const btn of btnBox.children) {
+      btn.innerText = "Нажми меня";
     }
+    ev.target.innerText = "Нажата!";
   }
 });
