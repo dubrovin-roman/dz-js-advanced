@@ -1,35 +1,18 @@
 "use strict";
 
-const activities = document.querySelector(".activities");
-const generatorBtn = document.querySelector(".generator-btn");
+let count = 0;
+const countBox = document.querySelector(".count-box");
+const btnBox = document.querySelector(".btns-box");
 
-async function getActivity() {
-  try {
-    const activityResponse = await fetch(
-      "https://bored.api.lewagon.com/api/activity",
-    );
-    if (!activityResponse.ok) {
-      throw new Error(activityResponse.status);
+btnBox.addEventListener("click", (ev) => {
+  if (ev.target.classList.contains("push-btn")) {
+    count++;
+    countBox.innerText = count;
+    if (ev.target.innerText === "Нажми меня") {
+      for (const btn of btnBox.children) {
+        btn.innerText = "Нажми меня";
+      }
+      ev.target.innerText = "Нажата!";
     }
-    const activityData = await activityResponse.json();
-    const { activity } = activityData;
-    return activity;
-  } catch (error) {
-    console.error(error);
   }
-}
-
-async function generateActivities() {
-  const activity = await getActivity();
-  const activityEl = document.createElement("div");
-  activityEl.setAttribute("class", "activity");
-  activityEl.innerText = activity;
-  activities.appendChild(activityEl);
-}
-
-generatorBtn.addEventListener("click", () => {
-  activities.innerHTML = "";
-  generateActivities();
-  generateActivities();
-  generateActivities();
 });
