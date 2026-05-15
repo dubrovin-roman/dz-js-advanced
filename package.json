@@ -1,0 +1,25 @@
+{
+  "name": "rollup-npm-test",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/dubrovin-roman/dz-js-advanced#readme",
+  "bugs": {
+    "url": "https://github.com/dubrovin-roman/dz-js-advanced/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dubrovin-roman/dz-js-advanced.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup index.js --format iife --name \"myBundle\" --file bundle.js",
+    "start": "live-server"
+  },
+  "dependencies": {
+    "rollup": "^4.60.4"
+  }
+}
